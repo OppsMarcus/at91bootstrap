@@ -5,8 +5,9 @@ import struct, sys
 import pmecc_head
 
 # open bootstrap file
-fd = open(sys.argv[1], "r")
-line = fd.read()
+fd = open(sys.argv[1], "rb")
+atbin_data = bytearray(fd.read())
+#print ("HEJ!")
 fd.close()
 
 if sys.argv[3] == "sama5d2_ptc":
@@ -21,13 +22,14 @@ else:
     sys.exit("Not support board!")
 
 vec = struct.pack("<I", pmecc_word)
-
+print ("JONAS: %x"%(pmecc_word))
 # generate a new file with pmecc header
-fd = open(sys.argv[2], "w")
+fd = open(sys.argv[2], "wb")
 
 for i in range(0, 52):
-	fd.write(vec)
+	fd.write(bytearray(vec))
 
-fd.write(line[0:])
+
+fd.write(atbin_data)
 
 fd.close()

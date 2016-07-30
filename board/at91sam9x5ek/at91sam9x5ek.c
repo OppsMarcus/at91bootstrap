@@ -74,8 +74,8 @@ static void ddramc_reg_config(struct ddramc_register *ddramc_config)
 			| AT91C_DDRC2_NR_13              /* 13 row bits (8K) */
 			| AT91C_DDRC2_CAS_3              /* CAS Latency 3 */
 			| AT91C_DDRC2_NB_BANKS_8         /* 8 banks */
-			| AT91C_DDRC2_DLL_RESET_DISABLED /* DLL not reset */
-			| AT91C_DDRC2_DECOD_INTERLEAVED);/*Interleaved decode*/
+			| AT91C_DDRC2_DLL_RESET_DISABLED); /* DLL not reset */
+			//| AT91C_DDRC2_DECOD_INTERLEAVED);/*Interleaved decode*/
 
 	/*
 	 * Make sure to uncomment the following line if the DDR controller
@@ -220,25 +220,8 @@ void at91_spi0_hw_init(void)
 #ifdef CONFIG_OF_LIBFDT
 void at91_board_set_dtb_name(char *of_name)
 {
-	unsigned int cpu_board_id = get_cm_sn();
-	unsigned int disp_board_id = get_dm_sn();
 
-	if (cpu_board_id == BOARD_ID_SAM9G15_CM)
-		strcpy(of_name, "at91sam9g15ek");
-	else if (cpu_board_id == BOARD_ID_SAM9G25_CM)
-		strcpy(of_name, "at91sam9g25ek");
-	else if (cpu_board_id == BOARD_ID_SAM9G35_CM)
-		strcpy(of_name, "at91sam9g35ek");
-	else if (cpu_board_id == BOARD_ID_SAM9X25_CM)
-		strcpy(of_name, "at91sam9x25ek");
-	else if (cpu_board_id == BOARD_ID_SAM9X35_CM)
-		strcpy(of_name, "at91sam9x35ek");
-	else
-		dbg_info("WARNING: Not correct CPU board ID\n");
-
-	if (disp_board_id == BOARD_ID_PDA_DM)
-		strcat(of_name, "_pda");
-
+strcpy(of_name, "at90sam9g25ek");
 	strcat(of_name, ".dtb");
 }
 #endif
@@ -298,9 +281,9 @@ void nandflash_hw_init(void)
 
 	reg = readl(AT91C_BASE_CCFG + CCFG_EBICSA);
 	reg |= AT91C_EBI_CS3A_SM;
-	if (get_cm_rev() == 'A')
-		reg &= ~AT91C_EBI_NFD0_ON_D16;
-	else
+	//if (get_cm_rev() == 'A')
+	//	reg &= ~AT91C_EBI_NFD0_ON_D16;
+	//else
 		reg |= (AT91C_EBI_DDR_MP_EN | AT91C_EBI_NFD0_ON_D16);
 
 	reg &= ~AT91C_EBI_DRV;
@@ -331,9 +314,9 @@ void nandflash_hw_init(void)
 		AT91C_BASE_SMC + SMC_CTRL3);
 
 	/* Configure the PIO controller */
-	if (get_cm_rev() == 'A')
-		pio_configure(nand_pins_lo);
-	else
+	//if (get_cm_rev() == 'A')
+	//	pio_configure(nand_pins_lo);
+	//else
 		pio_configure(nand_pins_hi);
 
 	pmc_enable_periph_clock(AT91C_ID_PIOC_D);
